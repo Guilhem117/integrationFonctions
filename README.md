@@ -4,4 +4,5 @@ PEREMARTY Colin
 SALANDINI Steven
 SERENE Guilhem
 
-DEADLINE : FIN 25/10/2015
+Reunion : 24/10/2015
+DEADLINE + Documents : 29/10/2015
