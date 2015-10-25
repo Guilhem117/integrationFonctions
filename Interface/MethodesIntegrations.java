@@ -1,94 +1,104 @@
 package integrationFonctions;
 
 public class MethodesIntegrations {
-	
-	
-	public static double integrationRectangleCos(double a, double b, int nbPas, 
-													boolean amelioration, ) {
-		function integrate (int xmin,intxmax,int pas ,int[] fx)
-		if (a > b || nbPas <=0) {
-			return 0;
-		}
-		
-		double integral = 0.0;
-		
-		for(int i=0; i < nbPas; i++) {
-			if (amelioration) {
-			integral += rectangleAmeliore(Math.cos(a+( (double) i/nbPas)), 
-										  Math.cos(a+( (double) (i+1)/nbPas)), 
-										  (b-a)/nbPas ); 
-			} else {
-				integral += rectangle(Math.cos(a+( (double) i/nbPas)),
-						  			  (b-a)/nbPas ); 
-			}
-		}
-					
-		return integral;
-		
-	}
-	
-	private static double rectangle(double fx, double h) {
-		
-		if (h<=0.0) {
-			return -1.0;
-		}
-			
-		return (h *fx);
-	}
-	
-	private static double rectangleAmeliore(double fx, double fx1, double h) {
-	
-		if (h<=0.0) {
-			return -1.0;
-		}
-			
-		return (h *(fx +fx1))/2.0;
-	}
-	
-	public static double integrationTrapeze(double a, double b, int nbPas) {
-		
-		if (a > b || nbPas <=0) {
-			return 0;
-		}
-		
-		double integral = 0.0;
-		
-		for(int i=0; i < nbPas; i++) {
-			//TODO
-		}
-					
-		return integral;
-	}
-	
-	public static double integrationSimpson(double a, double b, int nbPas) {
-		
-		if (a > b || nbPas <=0) {
-			return 0;
-		}
-		
-		double integral = 0.0;
-		
-		for(int i=0; i < nbPas; i++) {
-			//TODO
-		}
-					
-		return integral;
-	}
-	
-	
-	public static void main(String[] args) {
-		int nbPas;
-		double a,b;
-		
-		
-		nbPas = 100;
-		a = 0.0;
-		b = 1.0;
-		
-		
-		System.out.println("COSINUS par la m�thode du ");
-		System.out.println("Rectangle : " + integrationRectangleCos(a, b, nbPas, false));
-		System.out.println("Rectangle am�lior� : " + integrationRectangleCos(a, b, nbPas, true));
-		
-	}
+    
+    
+    public static double integrationRectangleSup(double xmin, double xmax, double[] fx) {
+        if (xmin > xmax || fx.length == 0) {
+            return 0;
+        }
+        
+        double integral = 0.0;
+        double h = (xmax-xmin)/(fx.length-1);
+            for(int i=0; i < fx.length; i++) {
+                integral += (h *fx[i]);
+        }
+                    
+        return integral;
+        
+    }
+
+    private static double integrationRectangleAmeliore(double xmin, double xmax, double[] fx) {
+        
+        if (xmin > xmax || fx.length == 0) {
+            return 0;
+        }
+        
+        double integral = 0.0;
+        double h = (xmax-xmin)/(fx.length-1);
+            for(int i=0; i < fx.length-1; i++) {
+                integral +=  (h *(fx[i] +fx[i+1]))/2.0;
+        }
+                    
+        return integral;
+            
+    }
+    
+    public static double integrationTrapeze(double xmin, double xmax, double[] fx) {
+        if (xmin > xmax || fx.length == 0) {
+            return 0;
+        }
+        
+        double integral = 0.0;
+//        double h = (xmax-xmin)/(fx.length-1);
+//            for(int i=0; i < fx.length; i++) {
+//                integral += (h *fx[i]);
+//        }
+        //TODO
+                    
+        return integral;
+        
+    }
+    public static double integrationSimpson(double xmin, double xmax, double[] fx) {
+        if (xmin > xmax || fx.length == 0) {
+            return 0;
+        }
+        
+        double integral = 0.0;
+//        double h = (xmax-xmin)/(fx.length-1);
+//            for(int i=0; i < fx.length; i++) {
+//                integral += (h *fx[i]);
+//        }
+        //TODO
+                    
+        return integral;
+        
+    }
+    
+    public static void main(String[] args) {
+        
+        //TEST de performance, précision TODO
+        int nbPas;
+        double a,b;
+        double fx[];
+        
+        nbPas = 100;
+        a = 0.0;
+        b = 1.0;
+        
+        //Génération des fx pour la fonction f(x)=x
+        fx = new double[nbPas+1];
+        for(int i=0; i < (nbPas+1); i++) {
+            fx[i] = a + ((double) i) /nbPas;  
+        }
+        
+        
+        System.out.println("Intégration de f(x) = x de " + a + " à " + b + " par la méthode du ");
+        System.out.println("Rectangle : " + integrationRectangleSup(a, b, fx));
+        System.out.println("Rectangle amélioré : " + integrationRectangleAmeliore(a, b, fx));
+        
+        
+        
+        //Génération des fx pour la fonction f(x)=x
+        fx = new double[nbPas+1];
+        for(int i=0; i < (nbPas+1); i++) {
+            fx[i] = Math.cos(a + ((double) i) /nbPas);  
+        }
+        System.out.println("\nIntégration de f(x) = cos(x) de " + a + " à " + b + " par la méthode du ");
+        System.out.println("Rectangle : " + integrationRectangleSup(a, b, fx));
+        System.out.println("Rectangle amélioré : " + integrationRectangleAmeliore(a, b, fx));
+        
+        
+        
+    }
 }
