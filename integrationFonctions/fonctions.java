@@ -10,22 +10,22 @@
  
 package integrationFonctions;
  
-public class Fonctions {
+public class FonctionsProbabilites {
 	
 	/**
-	* Densité de la loi normal centrée réduite
+	* Densité de probabilité de la loi normal centrée réduite
 	* @in valeur_X valeur de la variable aléatoire centrée réduite entre -1 et 1
 	*
-	* @out y float probabilité que X prenne la valeur valeur_X
+	* @out y double probabilité que X prenne la valeur valeur_X
 	*/
-	public float loi_de_gausse(valeur_X)
+	public static  double loi_de_gauss(double x)
 	{
-		float y ;
 		//y = (1 / sqrt(2*PI()))*exp(-(1/2)*x^2)
-		y = (1 / Math.sqrt(2*Math.PI()))*Math.exp(-(1/2)*x*x);
-		return y;
+		return (double) (double) (1.0 / Math.sqrt(2.0*Math.PI))*Math.exp(-(1.0/2.0)*Math.pow(x,2.0));
+		//return (double) Math.exp((-1.0/2.0)*Math.pow(x,2.0));
+		
 	}
-
+	
 	/**
 	* Densité de la loi normal 
 	* @in moyenne l'espérance (moyenne) de la loi
@@ -34,69 +34,77 @@ public class Fonctions {
 	* @in x_min limite inférieur de la fonction (ex - l'infini = -10^10)
 	* @in x_max limite supérieur de la fonction (ex + l'infini = 10^10)
 	*
-	* @out f_de_x[][] tableau de float densité de la loi normal
+	* @out f_de_x[][] tableau de double densité de la loi normal
 	*/
-	public float[] loi_normal(float moyenne, float phi, float echantillonage, float x_min, float x_max )
+	public static double[] loi_normal(double moyenne, double phi, double echantillonage, double x_min, double x_max )
 	{
 		//f_de_x est un tableau de 2 dimensions, contenant la valeur de x en premiere case et la valeur de y en deuxieme case
 		//f_de_x est un tableau représentant la fonction de répartition de la variable x
 		//taille = (x_max - x_min)/echantillonage +1
-		int taille = (x_max - x_min)/echantillonage +1
-		float f_de_x[taille]
-		int i = 0 ;
+		int taille = (int) (((x_max - x_min)/echantillonage) +1.0);
+		double f_de_x[]  = new double[taille];
+		double valeur;
+		double x;
 		//Pour valeur allant de x_min a x_max par pas de echantillonage
-		For (i= 0 ; i <= taille ; i ++){
+		for (int i= 0 ; i < taille ; i ++){
 			//valeur = i*echantillonage + x_min;
-			valeur = i*echantillonage + x_min;
+			valeur = (i*echantillonage) + x_min;
 			//X = ( valeur - moyenne ) / phi ;
-			X = ( valeur - moyenne ) / phi ;
+			x = ( valeur - moyenne ) / phi ;
+			
 			//f_de_x[i] = loi_de_gausse(X)
-			f_de_x[i] = loi_de_gausse(X)
+			f_de_x[i] = loi_de_gauss(x);
 		}
 		//Fin pour
 		//retourne f_de_x
-		return f_de_x
+		return f_de_x;
 	}
 
 	/**
 	* Densité de la loi normal 
 	* @in k int le degrée de liberté et le nombre de variables aléatoires indépendentes suivant N(0,1) de la loi du khi-deux
-	* @in echantillonage float echantillonage de la fonction
-	* @in x_min float limite inférieur de la fonction (ex - l'infini = -10^10)
-	* @in x_max float limite supérieur de la fonction (ex + l'infini = 10^10)
+	* @in echantillonage double echantillonage de la fonction
+	* @in x_min double limite inférieur de la fonction (ex - l'infini = -10^10)
+	* @in x_max double limite supérieur de la fonction (ex + l'infini = 10^10)
 	*
-	* @out f_de_x[] tableau de float densité  de la loi normal
+	* @out f_de_x[] tableau de double densité  de la loi normal
 	*/
-	public float[] loi_du_khi_deux(int k, float echantillonage, float x_min, float x_max )
+	public static double[] loi_du_khi_deux(int k, double echantillonage, double x_min, double x_max )
 	{
 		//f_de_x est un tableau de 2 dimensions, contenant la valeur de x en premiere case et la valeur de y en deuxieme case
 		//f_de_x est un tableau représentant la fonction de répartition de la variable x
 		//taille = (x_max - x_min)/echantillonage +1
-		//float f_de_x[taille]
-		float f_de_x[taille];
-		int i = 0 ;
-		//float gamma = fonction_gamma(k/2)
-		float gamma = fonction_gamma(k/2);
-		int i = 0 ;
+		//double f_de_x[taille]
+		int taille = (int) (((x_max - x_min)/echantillonage) +1.0);
+		double f_de_x[]  = new double[taille];
+		
+		//double gamma = fonction_gamma(k/2)
+		double gamma = fonction_gamma(k/2);
+		double x;
 		//Pour valeur allant de x_min a x_max par pas de echantillonage
-		For (i= 0 ; i <= taille ; i ++){
+		for (int i = 0; i < taille ; i ++){
 			//x = i*echantillonage + x_min;
 			x = i*echantillonage + x_min;
 			// f_de_x[i] = (1 / ((gamma)gamma*2^(n/2)))*x^((n/2)-1)*Math.exp(-x/2);
-			f_de_x[i] = (1 / ((gamma)gamma*2^(n/2)))*x^((n/2)-1)*Math.exp(-x/2);
+			f_de_x[i] = (1 / (gamma*Math.pow(2,(k/2))))*Math.pow(x,((k/2)-1))*Math.exp(-x/2);
+		}
+		
 		//Fin pour
-		return f_de_x
+		return f_de_x;
 	}
+	
 	/**
 	* @in x
-	* @out y float valeur de gamma correspondant à x
+	* @out y int valeur de gamma correspondant à x
+	*      -1 si x est negatif
 	*/
-	public float fonction_gamma(float x)
+	public static double fonction_gamma(int x)
 	{
+		if (x < 0) {
+			return -1;
+		}
 		//La fonction gamma(x) peut etre approché par la fonction factoriel x-1 si x est un entier positif
-		//float y
-		y = factoriel(x - 1);
-		return y
+		return factoriel(x-1);
 	}
 
 	/**
@@ -105,7 +113,7 @@ public class Fonctions {
 	*/
 	public static int factoriel( int x ) {
         // Il faut être sur que x est positif
-		if (x < 0) throw{
+		if (x < 0) {
            return -1;
 		}       
 		int factoriel = 1;
@@ -125,7 +133,7 @@ public class Fonctions {
 	avec un échantillonage de 0.5
 	
 	taille = (1 - -2)/0.5 +1= 7
-	float f_de_x[taille]
+	double f_de_x[taille]
 	
 	-2 =0*0.5+(-2)
 	f_de_x[0]= 4
